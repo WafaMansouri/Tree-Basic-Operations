@@ -1,0 +1,83 @@
+binary_tree :	STRUCT
+                VAL : INTEGER;
+                LC : ^binary_tree;
+                RC : ^binary_tree;
+                END_STRUCT
+
+// Function that gives the number of nodes in the tree
+FUNCTION nb_nodes(root: ^tree) : INTEGER
+VAR
+    nb: INTEGER:= 0;
+BEGIN
+    IF root=NULL THEN
+        RETURN nb;
+    ELSE
+        nb_nodes(root^.LC);
+        nb_nodes(root^.RC);
+        nb:= nb+1;
+        RETURN nb;
+    END_IF
+END 
+
+// Function that gives the height of the tree
+FUNCTION height(root: ^binary_tree) : INTEGER
+VAR
+    l, r:INTEGER:=0;
+BEGIN
+    IF (root=NULL) THEN
+        RETURN 0;
+    ELSE
+        l:=height(root^.LC);
+        l:=l+1;
+        r:=height(root^.RC);
+        r:=r+1;
+        RETURN max(l,r);
+    END_IF
+END
+
+// function that gives the number of leaves in the tree
+FUNCTION nb_leaves(root: ^binary_tree) : INTEGER
+VAR
+    n: INTEGER:=0;
+BEGIN
+    IF (root^.LC =NULL AND root^.RC= NULL) THEN
+        return n+1;
+    ELSE
+        nb_leaves(root^.LC);
+        nb_leaves(root^.RC);
+    END_IF
+END
+
+// Function that gives the maximum value in the tree
+FUNCTION max(root: ^binary_tree) : INTEGER
+VAR
+    m: INTEGER:=0;
+BEGIN
+    IF (max(root^.VAL>m)) THEN
+        m:=root^.VAL;
+    ELSE
+        max(root^.LC);
+        max(root^.RC);
+    END_IF
+    RETURN m;
+END
+
+// Function to test if the tree is a full binary tree
+FUNCTION is_full_binary(root: ^binary_tree) : BOOLEAN
+VAR
+    test:BOOLEAN:=TRUE
+BEGIN
+    IF (root^.LC= NULL AND root^.RC<>NULL) OR (root^.LC<> NULL AND root^.RC=NULL)  THEN
+        test:=FALSE;
+    ELSE_IF (test=TRUE) THEN
+        IF (root^.LC= NULL AND root^.RC=NULL) THEN
+        RETURN TRUE;
+        ELSE_IF
+            is_full_binary(root^.LC);
+            IF (test=TRUE) THEN
+                is_full_binary(root^.RC);
+            END_IF
+        END_IF
+    END_IF
+        RETURN test;
+END
